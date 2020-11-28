@@ -1,0 +1,18 @@
+
+.Music-Controller{
+    
+}
+
+.Controller{
+    font-size: xx-large;
+    color:white;
+    padding-top: 40px;
+}
+
+.fa{
+    cursor: pointer;
+}
+
+.fa-play, .fa-pause{
+    margin: 0 90px 0 90px;
+}
