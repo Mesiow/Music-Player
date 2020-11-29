@@ -30,13 +30,20 @@ class MusicController extends Component{
                     <div className="w3-container w3-blue"
                     style={{width:"50%", height:"8px"}}></div>
                 </div>
-                <div className="Controller">
+                {/*Display Song name and album*/}
+                <div className="Song-Meta">
+                    <div className="song-title">Home</div>
+                    <div className="song-artist">Resonance</div>
+                </div>
+                <div className="Controller"> 
+                    {/*Nav buttons*/}
                     <i className="fa fa-backward"></i>
-
                     <i onClick={this.handlePlayClick}
                     className={`fa fa-${state}`}></i>
-
                     <i className="fa fa-forward"></i>
+                </div>
+                <div className="Song-Selector-Tab">
+                    <i className="fa fa-chevron-up"></i>
                 </div>
             </div>
         );
