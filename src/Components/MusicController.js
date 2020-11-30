@@ -10,6 +10,7 @@ class MusicController extends Component{
             playing: false,
             icon: 'play',
             song: "HOME-Resonance",
+            down: false, //mouse down Used for dragging the audio position
            
         };
         this.audio = new Audio(song_file);
@@ -17,23 +18,28 @@ class MusicController extends Component{
         this.progressBarFull = React.createRef(); //entire gray section of progress bar
         this.progressBarCurrent = React.createRef(); //blue part, current location of progress bar
 
-        this.handlePlayClick = this.handlePlayClick.bind(this);
+        
         this.setMusicState = this.setMusicState.bind(this);
-        this.updateSongLocation = this.updateSongLocation.bind(this);
+        this.updateSongLocationOnClick = this.updateSongLocationOnClick.bind(this);
+        this.updateProgressBar = this.updateProgressBar.bind(this);
+
+        this.handlePlayClick = this.handlePlayClick.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseDown = this.handleMouseDown.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
     }
 
     componentDidMount(){
        // this.progressBarCurrent.current.addEventListener('resize', handleResize);
-        this.progressBarFull.current.addEventListener('click', this.updateSongLocation, false);
+        this.progressBarFull.current.addEventListener('mousedown', this.handleMouseDown);
+        this.progressBarFull.current.addEventListener('mousemove', this.handleMouseMove);
+        document.addEventListener('mouseup', this.handleMouseUp);
+        this.progressBarFull.current.addEventListener('click', this.updateSongLocationOnClick, false);
+        this.audio.addEventListener('timeupdate', () => this.updateProgressBar());
         this.audio.addEventListener('ended', () => this.setState({playing: false, icon: 'play'}));
     }
 
-    componentDidUpdate(){
-       
-     
-    }
-
-    updateSongLocation(e){
+    updateSongLocationOnClick(e){
         let rect = e.target.getBoundingClientRect();
         //x and y relative to the container
         let x = e.clientX - rect.left;
@@ -53,8 +59,27 @@ class MusicController extends Component{
         this.progressBarCurrent.current.style.width = `${newWidth}px`;
     }
 
-    handleResize(){
+    updateProgressBar(){
+       let duration = this.audio.duration;
+       let currentTime = this.audio.currentTime;
+       let ratio =  (currentTime + .25) / duration * 100;
 
+       let progressBar = this.progressBarCurrent.current;
+       let newWidth = (ratio) - 0.115; //just some hardcoded value to stop bar from going further
+       progressBar.style.width = `${newWidth}%`;
+    }
+
+    handleMouseMove(e){
+        if(this.state.down) //drag position
+            this.updateSongLocationOnClick(e);
+    }
+
+    handleMouseDown(e){
+        this.setState({down: true});
+    }
+
+    handleMouseUp(e){
+        this.setState({down: false});
     }
 
     handlePlayClick(){
@@ -80,7 +105,8 @@ class MusicController extends Component{
         return(
             <div className="Music-Controller">
                 {/*Song Progress Bar*/}
-                <div className="Progress-bar" ref={this.progressBarFull}>
+                <div 
+                className="Progress-bar" ref={this.progressBarFull}>
                     <div className="Current-Progress-bar"
                     ref={this.progressBarCurrent}
                     ></div>
