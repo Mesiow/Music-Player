@@ -9,6 +9,18 @@
     padding-top: 10px;
 }
 
+.Progress-bar{
+    width: 100%;
+    background-color: grey;
+}
+
+/*blue*/
+.Current-Progress-bar{
+    width: 0px;
+    height: 8px;
+    background-color: #1770ff;
+}
+
 .song-title{
     color: white;
     font-size: x-large;
