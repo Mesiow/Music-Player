@@ -1,6 +1,6 @@
 
 .Music-Controller{
-    
+
 }
 
 .Controller{
@@ -46,15 +46,43 @@
     margin: 0 87px 0 87px;
 }
 
-.Song-Selector-Tab{
+.Song-Selector-Menu{
     position: absolute;
     width: 100%;
     bottom: 0;
-    height:22px;
-    background-color:#7a7a7a;
+    overflow-y: auto;
+    margin-top: -20px;
+    height: 22px;
+    background-color:rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+    z-index: 2;
+    transition: all 0.5s ease-in-out;
 }
 
-.fa-chevron-up{
+.Toggle-Music-List{
+    position: sticky;
+    top: 0px;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    background: #555;
+}
+
+.Toggle-Music-List i.fa-chevron-down{
+    display: none;
+}
+
+
+.Move-Selector-Tab{
+    height: 400px;
+}
+
+
+.Music-List{
+
+}
+
+.fa-chevron-up, .fa-chevron-down{
     text-align: center;
     color: white;
     font-size: larger;

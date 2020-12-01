@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../styles/MusicController.css';
 import song_file from '../Music/HOME-Resonance.mp3';
+import MusicList from './MusicList';
 
 
 class MusicController extends Component{
@@ -11,7 +12,7 @@ class MusicController extends Component{
             icon: 'play',
             song: "HOME-Resonance",
             down: false, //mouse down Used for dragging the audio position
-           
+            showMusicList: false //controls whether the pop up list shows
         };
         this.audio = new Audio(song_file);
 
@@ -98,15 +99,12 @@ class MusicController extends Component{
         }
     }
 
-
-
     render(){
-        const {playing, icon, song} = this.state;
+        const {playing, icon, song, showMusicList} = this.state;
         return(
             <div className="Music-Controller">
                 {/*Song Progress Bar*/}
-                <div 
-                className="Progress-bar" ref={this.progressBarFull}>
+                <div className="Progress-bar" ref={this.progressBarFull}>
                     <div className="Current-Progress-bar"
                     ref={this.progressBarCurrent}
                     ></div>
@@ -123,9 +121,19 @@ class MusicController extends Component{
                     className={`fa fa-${icon}`}></i>
                     <i className="fa fa-forward"></i>
                 </div>
-                <div className="Song-Selector-Tab">
-                    <i className="fa fa-chevron-up"></i>
+                {/*Music List Tab*/}
+                <div className={`Song-Selector-Menu ${showMusicList ? `Move-Selector-Tab` : ``}`}>
+                    <div className="Toggle-Music-List">
+                        <i onClick={() => {this.setState({showMusicList: !this.state.showMusicList})}}
+                            className="fa fa-chevron-up"></i>
+                        <i className="fa fa-chevron-down"></i>
+                    </div>
+
+                    <div className="Music-List">
+
+                    </div>
                 </div>
+    
             </div>
         );
     }

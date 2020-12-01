@@ -9,10 +9,11 @@ class MusicContainer extends Component{
         this.state = { //State information about a song
             img: "",
             name: "none",
-            album: "none"
+            album: "none",
         };
     }
     render(){
+        const {showMusicList} = this.state;
         return (
             <div className="Music-Container">
                 {/*Song Image*/}
