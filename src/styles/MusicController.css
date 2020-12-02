@@ -54,9 +54,18 @@
     margin-top: -20px;
     height: 22px;
     background-color:rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(4px);
     z-index: 2;
     transition: all 0.5s ease-in-out;
+}
+
+.Song-Selector-Menu::-webkit-scrollbar{
+    width: 5px;
+    background:#222;
+}
+
+.Song-Selector-Menu::-webkit-scrollbar-thumb{
+    background: #1770ff;
 }
 
 .Toggle-Music-List{
@@ -72,15 +81,19 @@
     display: none;
 }
 
+.List-Active i.fa-chevron-down{
+    display: block;
+}
+
+.List-Active i.fa-chevron-up{
+    display: none;
+}
 
 .Move-Selector-Tab{
-    height: 400px;
+    height: 450px;
 }
 
 
-.Music-List{
-
-}
 
 .fa-chevron-up, .fa-chevron-down{
     text-align: center;
