@@ -21,6 +21,7 @@ class MusicController extends Component{
 
         
         this.setMusicState = this.setMusicState.bind(this);
+        this.toggleMusicList = this.toggleMusicList.bind(this);
         this.updateSongLocationOnClick = this.updateSongLocationOnClick.bind(this);
         this.updateProgressBar = this.updateProgressBar.bind(this);
 
@@ -99,6 +100,10 @@ class MusicController extends Component{
         }
     }
 
+    toggleMusicList(){
+        this.setState({showMusicList: !this.state.showMusicList})
+    }
+
     render(){
         const {playing, icon, song, showMusicList} = this.state;
         return(
@@ -122,16 +127,14 @@ class MusicController extends Component{
                     <i className="fa fa-forward"></i>
                 </div>
                 {/*Music List Tab*/}
-                <div className={`Song-Selector-Menu ${showMusicList ? `Move-Selector-Tab` : ``}`}>
+                <div className={`Song-Selector-Menu ${showMusicList ? `Move-Selector-Tab List-Active` : ``}`}>
                     <div className="Toggle-Music-List">
-                        <i onClick={() => {this.setState({showMusicList: !this.state.showMusicList})}}
+                        <i onClick={this.toggleMusicList}
                             className="fa fa-chevron-up"></i>
-                        <i className="fa fa-chevron-down"></i>
+                        <i onClick={this.toggleMusicList}
+                          className="fa fa-chevron-down"></i>
                     </div>
-
-                    <div className="Music-List">
-
-                    </div>
+                    {showMusicList && <MusicList />}
                 </div>
     
             </div>
