@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../styles/MusicController.css';
-import song_file from '../Music/HOME-Resonance.mp3';
+import {music} from './Music';
 import MusicList from './MusicList';
 
 
@@ -10,12 +10,13 @@ class MusicController extends Component{
         this.state = {
             playing: false,
             icon: 'play',
-            song: "HOME-Resonance",
             down: false, //mouse down Used for dragging the audio position
-            showMusicList: false //controls whether the pop up list shows
+            showMusicList: false, //controls whether the pop up list shows
+            currentSongInList: 0 //index into song array
         };
-        this.audio = new Audio(song_file);
-
+         //construct audio object and load first song
+         this.audio = new Audio(music[this.state.currentSongInList].audio);
+        
         this.progressBarFull = React.createRef(); //entire gray section of progress bar
         this.progressBarCurrent = React.createRef(); //blue part, current location of progress bar
 
@@ -25,21 +26,36 @@ class MusicController extends Component{
         this.updateSongLocationOnClick = this.updateSongLocationOnClick.bind(this);
         this.updateProgressBar = this.updateProgressBar.bind(this);
 
+        this.handlePrevClick = this.handlePrevClick.bind(this);
+        this.handleForwardClick = this.handleForwardClick.bind(this);
         this.handlePlayClick = this.handlePlayClick.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
+
+        this.loadAudio = this.loadAudio.bind(this);
+
     }
 
     componentDidMount(){
-       // this.progressBarCurrent.current.addEventListener('resize', handleResize);
+        //this.progressBarCurrent.current.addEventListener('resize', handleResize);
         this.progressBarFull.current.addEventListener('mousedown', this.handleMouseDown);
         this.progressBarFull.current.addEventListener('mousemove', this.handleMouseMove);
         document.addEventListener('mouseup', this.handleMouseUp);
         this.progressBarFull.current.addEventListener('click', this.updateSongLocationOnClick, false);
         this.audio.addEventListener('timeupdate', () => this.updateProgressBar());
         this.audio.addEventListener('ended', () => this.setState({playing: false, icon: 'play'}));
+
+        
     }
+
+    loadAudio(audio){
+        //load new audio source
+        this.audio.pause();
+        this.audio.src = audio;
+        this.audio.play();
+    }
+
 
     updateSongLocationOnClick(e){
         let rect = e.target.getBoundingClientRect();
@@ -88,6 +104,43 @@ class MusicController extends Component{
         this.setState({playing: !this.state.playing}, this.setMusicState);
     }
 
+    handlePrevClick(){
+        if(this.state.currentSongInList > 0){ //can go to previous song
+            this.setState((prevState) => {
+                return {currentSongInList: prevState.currentSongInList - 1}
+            }, () => {
+                this.loadAudio(music[this.state.currentSongInList].audio);
+            });
+        }else{
+            //cant go to previous so loop around
+            this.setState({currentSongInList: music.length - 1},
+                () => {
+                    this.loadAudio(music[this.state.currentSongInList].audio);
+                });
+        }
+    }
+
+    handleForwardClick(){
+        //ok to move to next song, haven't reached the end
+        if(this.state.currentSongInList < (music.length - 1)){
+            this.setState((prevState) => {
+                return {currentSongInList: prevState.currentSongInList + 1}
+            }, () => {
+                 //load the next song
+                 this.loadAudio(music[this.state.currentSongInList].audio);
+            });
+
+        }else{
+             //reached end of music list, so loop back to beginning
+             this.setState({currentSongInList: 0},
+                () => {
+                    this.loadAudio(music[this.state.currentSongInList].audio);
+                });
+        }
+       
+       
+    }
+
     setMusicState(){
         //change icon
         if(this.state.playing){
@@ -106,6 +159,7 @@ class MusicController extends Component{
 
     render(){
         const {playing, icon, song, showMusicList} = this.state;
+        const audio = music[this.state.currentSongInList];
         return(
             <div className="Music-Controller">
                 {/*Song Progress Bar*/}
@@ -116,15 +170,17 @@ class MusicController extends Component{
                 </div>
                 {/*Display Song name and album*/}
                 <div className="Song-Meta">
-                    <div className="song-title">Home</div>
-                    <div className="song-artist">Resonance</div>
+                    <div className="song-title">{audio.title}</div>
+                    <div className="song-artist">{audio.artist}</div>
                 </div>
                 <div className="Controller">
                     {/*Nav buttons*/}
-                    <i className="fa fa-backward"></i>
+                    <i onClick={this.handlePrevClick} 
+                    className="fa fa-backward"></i>
                     <i onClick={this.handlePlayClick}
                     className={`fa fa-${icon}`}></i>
-                    <i className="fa fa-forward"></i>
+                    <i onClick={this.handleForwardClick} 
+                    className="fa fa-forward"></i>
                 </div>
                 {/*Music List Tab*/}
                 <div className={`Song-Selector-Menu ${showMusicList ? `Move-Selector-Tab List-Active` : ``}`}>
@@ -134,9 +190,8 @@ class MusicController extends Component{
                         <i onClick={this.toggleMusicList}
                           className="fa fa-chevron-down"></i>
                     </div>
-                    {showMusicList && <MusicList />}
+                    {showMusicList && <MusicList music={music}/>}
                 </div>
-    
             </div>
         );
     }

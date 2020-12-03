@@ -1,71 +1,22 @@
 import React, {Component} from 'react';
 import '../styles/MusicList.css';
-import egems from '../images/egems.png';
-
-const music = [
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    },
-    {
-        img: egems,
-        title:"Home",
-        artist: "Resonance"
-    }
-]
 
 
 class MusicList extends Component{
     constructor(props){
         super(props);
-        this.state = { songs: music };
+        this.state = { songs: this.props.music };
     }
     render(){
         return(
             <div className="List-Container">
-                {this.state.songs.map((item) => {
+                {this.state.songs.map((item, idx) => {
                 return (
-                 <div className="Song-Item">
+                 <div className="Song-Item" key={idx}>
                      <img className="song-img" src={item.img}/>
                      <div className="Meta">
-                         <span className="song-title-item">{item.title}</span>
-                         <span className="song-artist-item">{item.artist}</span>
+                         <div className="song-title-item">{item.title}</div>
+                         <div className="song-artist-item">{item.artist}</div>
                      </div>
                  </div>
                 );
