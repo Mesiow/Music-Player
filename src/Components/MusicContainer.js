@@ -1,25 +1,30 @@
 import React, {Component} from 'react';
 import MusicController from './MusicController';
 import '../styles/MusicContainer.css';
-import image from '../images/egems.png';
+import {music} from './Music';
 
 class MusicContainer extends Component{
     constructor(){
         super();
         this.state = { //State information about a song
-            img: "",
+            img: music[0].img,
             name: "none",
-            album: "none",
         };
+        this.handleImgChange = this.handleImgChange.bind(this);
     }
+
+    handleImgChange(newImg){
+        this.setState({img: newImg});
+    }
+
     render(){
-        const {showMusicList} = this.state;
+        const {img} = this.state;
         return (
             <div className="Music-Container">
                 {/*Song Image*/}
-                <img className="Current-Song-Img" src={image} alt="song"></img>
+                <img className="Current-Song-Img" src={img} alt="song"></img>
                 {/*Music Controller*/}
-                <MusicController />
+                <MusicController handleImgChange={this.handleImgChange}/>
             </div>
         );
     }

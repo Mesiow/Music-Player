@@ -3,7 +3,7 @@ import HOME from '../Music/HOME-Resonance.mp3';
 import youth from '../images/youth.jpg';
 import YOUTH from '../Music/Krosia-Youth.mp3';
 
-export const music = [
+const music = [
     {
         img: egems,
         audio: HOME,
@@ -52,4 +52,4 @@ export const music = [
     */
 ]
 
-export default {music};
+export {music};

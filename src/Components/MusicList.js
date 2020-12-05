@@ -8,11 +8,13 @@ class MusicList extends Component{
         this.state = { songs: this.props.music };
     }
     render(){
+        const {handleSongListClick} = this.props;
         return(
             <div className="List-Container">
                 {this.state.songs.map((item, idx) => {
                 return (
-                 <div className="Song-Item" key={idx}>
+                 <div className="Song-Item" key={idx}
+                 onClick={() => handleSongListClick(item, idx)}>
                      <img className="song-img" src={item.img}/>
                      <div className="Meta">
                          <div className="song-title-item">{item.title}</div>

@@ -32,6 +32,7 @@ class MusicController extends Component{
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handleSongListClick = this.handleSongListClick.bind(this);
 
         this.loadAudio = this.loadAudio.bind(this);
 
@@ -54,6 +55,9 @@ class MusicController extends Component{
         this.audio.pause();
         this.audio.src = audio;
         this.audio.play();
+        //set music playing state to true and update icon
+        this.setState({playing: true});
+        this.setState({icon: 'pause'});
     }
 
 
@@ -105,40 +109,35 @@ class MusicController extends Component{
     }
 
     handlePrevClick(){
-        if(this.state.currentSongInList > 0){ //can go to previous song
-            this.setState((prevState) => {
-                return {currentSongInList: prevState.currentSongInList - 1}
-            }, () => {
-                this.loadAudio(music[this.state.currentSongInList].audio);
-            });
-        }else{
-            //cant go to previous so loop around
-            this.setState({currentSongInList: music.length - 1},
-                () => {
-                    this.loadAudio(music[this.state.currentSongInList].audio);
-                });
-        }
+        this.setState((prevState) => {
+            return {currentSongInList: (prevState.currentSongInList - 1) % music.length}
+        }, () => {
+            this.loadAudio(music[this.state.currentSongInList].audio);
+            //img change
+            this.props.handleImgChange(music[this.state.currentSongInList].img);
+        });
     }
 
     handleForwardClick(){
-        //ok to move to next song, haven't reached the end
-        if(this.state.currentSongInList < (music.length - 1)){
-            this.setState((prevState) => {
-                return {currentSongInList: prevState.currentSongInList + 1}
-            }, () => {
-                 //load the next song
-                 this.loadAudio(music[this.state.currentSongInList].audio);
-            });
+        //move to next song, wrap around if at end
+        this.setState((prevState) => {
+            return {currentSongInList: (prevState.currentSongInList + 1) % music.length}
+        }, () => {
+             //load the next song
+            this.loadAudio(music[this.state.currentSongInList].audio);
+            this.props.handleImgChange(music[this.state.currentSongInList].img);
+        });
+    } 
 
-        }else{
-             //reached end of music list, so loop back to beginning
-             this.setState({currentSongInList: 0},
-                () => {
-                    this.loadAudio(music[this.state.currentSongInList].audio);
-                });
-        }
-       
-       
+
+    //takes in song item and its index that was clicked
+    //to update to new song clicked
+    handleSongListClick(item, idx){
+        //update index var and run callback code
+        this.setState({currentSongInList: idx}, () => {
+            this.toggleMusicList();
+            this.loadAudio(item.audio);
+        });
     }
 
     setMusicState(){
@@ -190,7 +189,7 @@ class MusicController extends Component{
                         <i onClick={this.toggleMusicList}
                           className="fa fa-chevron-down"></i>
                     </div>
-                    {showMusicList && <MusicList music={music}/>}
+                    {showMusicList && <MusicList music={music} handleSongListClick={this.handleSongListClick}/>}
                 </div>
             </div>
         );
