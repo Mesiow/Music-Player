@@ -12,10 +12,10 @@ class MusicController extends Component{
             icon: 'play',
             down: false, //mouse down Used for dragging the audio position
             showMusicList: false, //controls whether the pop up list shows
-            currentSongInList: 0 //index into song array
+            currentSongInList: 0, //index into song array
         };
-         //construct audio object and load first song
-         this.audio = new Audio(music[this.state.currentSongInList].audio);
+        //construct audio object and load first song
+        this.audio = new Audio(music[this.state.currentSongInList].audio);
         
         this.progressBarFull = React.createRef(); //entire gray section of progress bar
         this.progressBarCurrent = React.createRef(); //blue part, current location of progress bar
@@ -46,8 +46,6 @@ class MusicController extends Component{
         this.progressBarFull.current.addEventListener('click', this.updateSongLocationOnClick, false);
         this.audio.addEventListener('timeupdate', () => this.updateProgressBar());
         this.audio.addEventListener('ended', () => this.setState({playing: false, icon: 'play'}));
-
-        
     }
 
     loadAudio(audio){
@@ -109,11 +107,11 @@ class MusicController extends Component{
     }
 
     handlePrevClick(){
+        console.log("music length: ", music.length);
         this.setState((prevState) => {
             return {currentSongInList: (prevState.currentSongInList - 1) % music.length}
         }, () => {
             this.loadAudio(music[this.state.currentSongInList].audio);
-            //img change
             this.props.handleImgChange(music[this.state.currentSongInList].img);
         });
     }
@@ -137,6 +135,7 @@ class MusicController extends Component{
         this.setState({currentSongInList: idx}, () => {
             this.toggleMusicList();
             this.loadAudio(item.audio);
+            this.props.handleImgChange(music[this.state.currentSongInList].img);
         });
     }
 
@@ -157,8 +156,8 @@ class MusicController extends Component{
     }
 
     render(){
-        const {playing, icon, song, showMusicList} = this.state;
-        const audio = music[this.state.currentSongInList];
+        const {playing, icon, song, showMusicList, currentSongInList} = this.state;
+        const audio = music[currentSongInList];
         return(
             <div className="Music-Controller">
                 {/*Song Progress Bar*/}
