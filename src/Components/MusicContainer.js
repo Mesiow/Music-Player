@@ -4,8 +4,8 @@ import '../styles/MusicContainer.css';
 import {music} from './Music';
 
 class MusicContainer extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = { //State information about a song
             img: music[0].img,
             name: "none",
@@ -14,7 +14,8 @@ class MusicContainer extends Component{
     }
 
     handleImgChange(newImg){
-        this.setState({img: newImg});
+        this.props.handleBackgroundImgChange(newImg); //handle background image change
+        this.setState({img: newImg}); //handle controller img change
     }
 
     render(){
