@@ -3,6 +3,11 @@ import '../styles/MusicController.css';
 import {music} from './Music';
 import MusicList from './MusicList';
 
+//Fix javascript modulo bug
+Number.prototype.mod = function(n){
+    return ((this % n) + n) % n;
+}
+
 
 class MusicController extends Component{
     constructor(props){
@@ -39,7 +44,6 @@ class MusicController extends Component{
     }
 
     componentDidMount(){
-        //this.progressBarCurrent.current.addEventListener('resize', handleResize);
         this.progressBarFull.current.addEventListener('mousedown', this.handleMouseDown);
         this.progressBarFull.current.addEventListener('mousemove', this.handleMouseMove);
         document.addEventListener('mouseup', this.handleMouseUp);
@@ -107,10 +111,10 @@ class MusicController extends Component{
     }
 
     handlePrevClick(){
-        console.log("music length: ", music.length);
         this.setState((prevState) => {
-            return {currentSongInList: (prevState.currentSongInList - 1) % music.length}
+            return {currentSongInList: (prevState.currentSongInList - 1).mod(music.length)}
         }, () => {
+            //load prev song
             this.loadAudio(music[this.state.currentSongInList].audio);
             this.props.handleImgChange(music[this.state.currentSongInList].img);
         });
@@ -156,8 +160,8 @@ class MusicController extends Component{
     }
 
     render(){
-        const {playing, icon, song, showMusicList, currentSongInList} = this.state;
-        const audio = music[currentSongInList];
+        const {playing, icon, showMusicList, currentSongInList } = this.state;
+        const song = music[currentSongInList];
         return(
             <div className="Music-Controller">
                 {/*Song Progress Bar*/}
@@ -168,8 +172,8 @@ class MusicController extends Component{
                 </div>
                 {/*Display Song name and album*/}
                 <div className="Song-Meta">
-                    <div className="song-title">{audio.title}</div>
-                    <div className="song-artist">{audio.artist}</div>
+                    <div className="song-title">{song.title}</div>
+                    <div className="song-artist">{song.artist}</div>
                 </div>
                 <div className="Controller">
                     {/*Nav buttons*/}

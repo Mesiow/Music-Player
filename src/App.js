@@ -8,7 +8,6 @@ function App() {
   const [backgroundImg, setBackgroundImg] = React.useState("images/egems.png");
 
   const handleBackgroundImgChange = (newImg) => {
-    console.log(newImg);
     setBackgroundImg(newImg);
   };
 
