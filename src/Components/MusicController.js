@@ -21,6 +21,8 @@ class MusicController extends Component{
         };
         //construct audio object and load first song
         this.audio = new Audio(music[this.state.currentSongInList].audio);
+        //set first background img
+        this.props.handleImgChange(music[this.state.currentSongInList].img);
         
         this.progressBarFull = React.createRef(); //entire gray section of progress bar
         this.progressBarCurrent = React.createRef(); //blue part, current location of progress bar

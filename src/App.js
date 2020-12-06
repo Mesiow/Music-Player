@@ -5,7 +5,7 @@ import MusicContainer from './Components/MusicContainer';
 
 
 function App() {
-  const [backgroundImg, setBackgroundImg] = React.useState("images/egems.png");
+  const [backgroundImg, setBackgroundImg] = React.useState("");
 
   const handleBackgroundImgChange = (newImg) => {
     setBackgroundImg(newImg);
