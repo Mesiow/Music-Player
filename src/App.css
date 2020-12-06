@@ -1,16 +1,17 @@
 .App{
-  
-  
-}
+  /* !important;*/
 
-html{
-  background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("images/egems.png") !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  background-size: auto !important;
+  background-size: cover !important;
   width: 100% !important;
   height: 100vh !important;
   z-index: 0  !important;
+  overflow: hidden;
 }
+
+
+
+
 
 

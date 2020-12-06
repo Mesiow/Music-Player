@@ -1,10 +1,24 @@
+import React from 'react';
 import './App.css';
 import MusicContainer from './Components/MusicContainer';
 
+
+
 function App() {
+  const [backgroundImg, setBackgroundImg] = React.useState("images/egems.png");
+
+  const handleBackgroundImgChange = (newImg) => {
+    console.log(newImg);
+    setBackgroundImg(newImg);
+  };
+
   return (
-    <div>
-      <MusicContainer />
+    <div style={{ 
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${backgroundImg})`
+      }}
+    className="App">
+  
+      <MusicContainer handleBackgroundImgChange={handleBackgroundImgChange}/>
     </div>
   );
 }
