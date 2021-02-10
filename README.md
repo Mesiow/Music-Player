@@ -1,6 +1,8 @@
 # Frontend React Music Player
 Built with React and Vanilla CSS
 
+App: https://priceless-perlman-73ea54.netlify.app/
+
 
 # Getting Started with Create React App
 
